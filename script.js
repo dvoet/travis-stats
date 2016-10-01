@@ -153,6 +153,8 @@ function getBuildDate(build) {
 
 function updateChart() {
 	var repoName = document.getElementById('repo-name').value;
+	var n = parseInt(document.getElementById('requests').value);
+	var branch = document.getElementById('branch').value;
 
 	// need at least "a/a"
 	if (repoName.length < 3) {
@@ -166,7 +168,7 @@ function updateChart() {
 	var builds = [];
 
 	var oldestBuild = Infinity;
-	var i=0, n=20;
+	var i=0;
 
 	var buildCounts = {};
 
@@ -193,8 +195,12 @@ function updateChart() {
 			if (buildNr < curOldestBuild) {
 				curOldestBuild = buildNr;
 			}
+			
+			if (build.result != 0) {
+				return;
+			}
 
-			if (build.branch !== 'develop' || build.result !== 0) {
+			if (branch !== '' && build.branch !== branch) {
 				return;
 			}
 
